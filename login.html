@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>字符限制 登录框</title>
+</head>
+<body>
+    <div class="login-form">
+        <input id="id-input-username" type="text" name="" value="">
+        </br>
+        <button id="id-button-login" type="button" name="button">登录</button>
+        <h3 id="id-h3-xmui"></h3>
+    </div>
+    <script>
+        var log = console.log.bind(console)
+        //定义一个获取元素的函数
+        var e = function(selector) {
+            return document.querySelector(selector)
+        }
+        //1.先找到按钮
+        var LoginButton = e('#id-button-login')
+        //2.声明一个函数
+        var clicked = function() {
+            var input = e('#id-input-username')
+            var username = input.value
+            //获取h3标签
+            var h3 = e('#id-h3-xmui')
+            //判断是否符合条件的函数
+            if(txjm(username)) {
+                log('检查合格')
+                h3.innerHTML = '检查合格'
+            } else {
+                log('用户名错误')
+                h3.innerHTML = '用户名错误'
+            }
+        }
+
+        //3.添加事件，使用addEventListener
+        LoginButton.addEventListener('click', clicked)
+
+        //判断是否只包含字母、数字、下划线的函数
+        var pjsr = function(s) {
+            var zimu = 'abcdefghijklmnopqrstuvwxyz'
+            var uuzi = '0123456789'
+            var xwhw = '_'
+            var result = ''
+            var n = s.length
+            for(var i = 0; i < n; i++) {
+                //把所有的空格都累加到result
+                var p =xwhw.includes(s[i]) || zimu.includes(s[i]) || uuzi.includes(s[i])
+                if(p) {
+                    result += s[i]
+                }
+            }
+            if(result.length == n) {
+                return true
+            } else {
+                return false
+            }
+        }
+        //加强版ensure函数
+        var ensureEqual = function(a, b, message) {
+        	if(a != b) {
+        		console.log(`${message}, (${a}) 不等于 (${b})`)
+        	} else {
+        		console.log('测试成功')
+        	}
+        }
+
+        //测试函数（样式如下）
+        var test_pjsr = function() {
+            ensureEqual(pjsr('1a_'), true, 'pjsr error1')
+            ensureEqual(pjsr('1a'), true, 'pjsr error2')
+            ensureEqual(pjsr('1#_'), false, 'pjsr error3')
+            ensureEqual(pjsr('%ab'), false, 'pjsr error4')
+            log('***pjsr 测试完成')
+        }
+        //判断所有条件的函数
+        var txjm = function(s) {
+            var zimu = 'abcdefghijklmnopqrstuvwxyz'
+            var uuzi = '0123456789'
+            var n = s.length
+            // 1，第一位是字母
+            // 2，最小长度2
+            // 3，只能字母或数字结尾
+            // 4，只能包含字母、数字、下划线
+            // 5，最大长度10
+            var jx1 = zimu.includes(s[0])
+            var jx2 = n >= 2
+            var jx3 = zimu.includes(s[n-1]) || uuzi.includes(s[n-1])
+            var jx4 = pjsr(s)
+            var jx5 = n <= 10
+            //***注意不能使用2 <= n <= 10这种方法，只能使用&&来判断
+            if(jx1 && jx2 && jx3 && jx4 && jx5) {
+                return true
+            } else {
+                return false
+            }
+        }
+        //测试函数（样式如下）
+        var test_txjm = function() {
+            ensureEqual(txjm('1a'), false, 'txjm error1')
+            ensureEqual(txjm('a'), false, 'txjm error2')
+            ensureEqual(txjm('abcdefghijklmnopqrstuvwxyz'), false, 'txjm error3')
+            ensureEqual(txjm('ab'), true, 'txjm error4')
+            ensureEqual(txjm('a1'), true, 'txjm error5')
+            ensureEqual(txjm('abc'), true, 'txjm error6')
+            ensureEqual(txjm('666'), false, 'txjm error6')
+            log('***txjm 测试完成')
+        }
+
+        //***最后才调用,保证只有一个入口
+        var _main = function() {
+            //test_pjsr()
+            //test_txjm()
+        }
+        _main()
+    </script>
+</body>
+</html>
